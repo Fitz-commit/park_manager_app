@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/home_48px"
+        android:title="Home" />
+    <item
+        android:icon="@drawable/search_48px"
+        android:title="Search" />
+    <item
+        android:icon="@drawable/photo_camera_48px"
+        android:title="Camera" />
+    <item
+        android:icon="@drawable/settings_accessibility_48px"
+        android:title="Profil" />
+</menu>

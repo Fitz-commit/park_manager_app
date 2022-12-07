@@ -26,8 +26,8 @@ public class mainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_fragmentA);
-                NavHostFragment.findNavController(mainFragment.this)
-                        .navigate(R.id.action_mainFragment_to_fragmentA);
+                //NavHostFragment.findNavController(mainFragment.this)
+                        //.navigate(R.id.action_mainFragment_to_fragmentA);
             }
         });
 
@@ -35,8 +35,8 @@ public class mainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_fragmentB);
-                NavHostFragment.findNavController(mainFragment.this)
-                .navigate(R.id.action_mainFragment_to_fragmentB);
+                //NavHostFragment.findNavController(mainFragment.this)
+                //.navigate(R.id.action_mainFragment_to_fragmentB);
             }
         });
     }

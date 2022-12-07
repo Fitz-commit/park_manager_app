@@ -6,33 +6,28 @@
     app:startDestination="@id/mainFragment">
 
     <fragment
-        android:id="@+id/fragmentA"
-        android:name="com.example.parkmanager.FragmentA"
-        android:label="fragment_a"
-        tools:layout="@layout/fragment_a" >
-        <action
-            android:id="@+id/action_fragmentA_to_mainFragment"
-            app:destination="@id/mainFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/fragmentB"
-        android:name="com.example.parkmanager.FragmentB"
-        android:label="fragment_b"
-        tools:layout="@layout/fragment_b" >
-        <action
-            android:id="@+id/action_fragmentB_to_mainFragment"
-            app:destination="@id/mainFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.parkmanager.mainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
-        <action
-            android:id="@+id/action_mainFragment_to_fragmentB"
-            app:destination="@id/fragmentB" />
-        <action
-            android:id="@+id/action_mainFragment_to_fragmentA"
-            app:destination="@id/fragmentA" />
-    </fragment>
+        tools:layout="@layout/fragment_main" />
+    <fragment
+        android:id="@+id/profilFragment"
+        android:name="com.example.parkmanager.ui.profil.ProfilFragment"
+        android:label="fragment_profil"
+        tools:layout="@layout/fragment_profil" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.parkmanager.ui.camera.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.parkmanager.ui.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/parkFragment"
+        android:name="com.example.parkmanager.ParkFragment"
+        android:label="fragment_park"
+        tools:layout="@layout/fragment_park" />
 </navigation>
