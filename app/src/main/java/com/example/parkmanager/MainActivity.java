@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.parkmanager.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,12 +28,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
-
         NavController navController = Navigation.findNavController(this, R.id.nav_host_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-
-
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        NavController botNavController = Navigation.findNavController(this, R.id.nav_host_content_main);
+        NavigationUI.setupWithNavController(binding.bottomNavigation, botNavController);
 
     }
 
@@ -49,11 +52,6 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.profil_setting) {
-            return true;
-        }
 
         if (id == R.id.logout_setting) {
             return true;

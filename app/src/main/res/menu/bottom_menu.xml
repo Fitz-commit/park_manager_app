@@ -2,15 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/mainFragment"
         android:icon="@drawable/home_48px"
         android:title="Home" />
     <item
+        android:id="@+id/searchFragment"
         android:icon="@drawable/search_48px"
         android:title="Search" />
     <item
+        android:id="@+id/cameraFragment"
         android:icon="@drawable/photo_camera_48px"
         android:title="Camera" />
     <item
+        android:id="@+id/profilFragment"
         android:icon="@drawable/settings_accessibility_48px"
         android:title="Profil" />
 </menu>
