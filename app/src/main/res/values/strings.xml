@@ -2,4 +2,8 @@
     <string name="app_name">ParkManager</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="label_name">Name:</string>
+    <string name="label_lastname">Lastname:</string>
+    <string name="label_lnumber">Licence number:</string>
+    <string name="label_email">Email:</string>
 </resources>
