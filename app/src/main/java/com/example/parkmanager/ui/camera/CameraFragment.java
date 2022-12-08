@@ -91,7 +91,15 @@ public class CameraFragment extends Fragment  {
 
     @Override
     public void onPause() {
+        codeScanner.releaseResources();
 
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        codeScanner.releaseResources();
+        binding = null;
+        super.onDestroy();
     }
 }
