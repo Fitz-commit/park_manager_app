@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.parkmanager.MainActivity;
 import com.example.parkmanager.databinding.FragmentMainBinding;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,11 +27,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
@@ -42,16 +46,24 @@ public class mainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
+
         binding.btnFragmentA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
+
                 OkHttpClient client = new OkHttpClient();
 
-                String url = "http://10.0.2.2:5000/all/parkingplace";
+                MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+                HashMap<String, String> bodymap = new HashMap<String, String>();
+                bodymap.put("user_token", "fe0a3e0ac5bb5fb6ff8a320b1a3b695b2dd058dd9fcf9d8dec042b09b360953c");
+                JSONObject j = new JSONObject(bodymap);
+                String json = j.toString();
+                String url = "http://10.0.2.2:5000/user/reserve/all";
+                RequestBody body = RequestBody.create(json, JSON); // new
 
                 Request request = new Request.Builder()
                         .url(url)
+                        .post(body)
                         .build();
 
                 client.newCall(request).enqueue(new Callback() {
@@ -68,17 +80,37 @@ public class mainFragment extends Fragment {
 
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
-                                public void run() {
-                                    binding.jsonId.setText(myResponse);
+                                public void run()  {
+                                    for (int i =0; i< 1; i++){
+                                        JSONArray ja = null;
+                                        try {
+                                            ja = new JSONArray(myResponse);
+
+                                        JSONObject reservierung = ja.getJSONObject(i);
+
+                                        String resID = reservierung.getString("res_id");
+                                        String resPPID = reservierung.getString("res_pp_id");
+
+                                        binding.jsonId.append(resID + ", " + resPPID);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+
+
                                 }
                             });
+
 
 
                         }
                     }
                 });
 
-                 */
+
+
+
 
 
                 //Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_fragmentA);

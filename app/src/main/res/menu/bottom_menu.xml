@@ -9,12 +9,4 @@
         android:id="@+id/searchFragment"
         android:icon="@drawable/search_48px"
         android:title="Search" />
-    <item
-        android:id="@+id/cameraFragment"
-        android:icon="@drawable/photo_camera_48px"
-        android:title="Camera" />
-    <item
-        android:id="@+id/profilFragment"
-        android:icon="@drawable/settings_accessibility_48px"
-        android:title="Profil" />
 </menu>
