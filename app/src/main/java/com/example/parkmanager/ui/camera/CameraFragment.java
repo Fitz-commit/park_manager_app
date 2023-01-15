@@ -44,6 +44,7 @@ import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -63,7 +64,15 @@ public class CameraFragment extends Fragment  {
     private CodeScanner codeScanner;
     private FragmentCameraBinding binding;
     private String qrCode;
-    OkHttpClient client = new OkHttpClient();
+    OkHttpClient client = new OkHttpClient.Builder()
+            .addNetworkInterceptor(new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request().newBuilder().addHeader("Connection", "close").build();
+            return chain.proceed(request);
+        }
+    })
+            .build();
 
 
     public static CameraFragment newInstance(String param1, String param2) {
@@ -82,7 +91,6 @@ public class CameraFragment extends Fragment  {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mainViewModel viewModel = new ViewModelProvider(requireActivity()).get(mainViewModel.class);
-        //TODO: camera booking impelmentieren
         Button btnScan = binding.btnScan;
 
         btnScan.setOnClickListener(new View.OnClickListener() {

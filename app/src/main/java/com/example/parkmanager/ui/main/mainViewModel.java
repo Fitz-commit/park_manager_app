@@ -10,7 +10,7 @@ public class mainViewModel extends ViewModel {
 
     public mainViewModel() {
         resID = new MutableLiveData<>();
-        resID.setValue("This is home fragment");
+        resID.setValue("");
     }
     public void setresID(String resID) {
         this.resID.setValue(resID);

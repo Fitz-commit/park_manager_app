@@ -18,12 +18,20 @@
         android:id="@+id/searchFragment"
         android:name="com.example.parkmanager.ui.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_parkFragment"
+            app:destination="@id/parkFragment" />
+    </fragment>
     <fragment
         android:id="@+id/parkFragment"
-        android:name="com.example.parkmanager.ParkFragment"
+        android:name="com.example.parkmanager.ui.parkingplace.ParkFragment"
         android:label="fragment_park"
-        tools:layout="@layout/fragment_park" />
+        tools:layout="@layout/fragment_park" >
+        <action
+            android:id="@+id/action_parkFragment_to_lotFragment"
+            app:destination="@id/lotFragment" />
+    </fragment>
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.example.parkmanager.ui.camera.CameraFragment"
@@ -33,4 +41,9 @@
             android:id="@+id/action_cameraFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/lotFragment"
+        android:name="com.example.parkmanager.ui.parkingplace.LotFragment"
+        android:label="fragment_lot"
+        tools:layout="@layout/fragment_lot" />
 </navigation>

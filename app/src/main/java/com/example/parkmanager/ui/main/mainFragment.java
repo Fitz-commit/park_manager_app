@@ -59,12 +59,8 @@ public class mainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String s = mPreferences.getString("user_token","");
         getAllReservations();
         getAllBookings();
-
-
-
 
 
     }
@@ -120,9 +116,9 @@ public class mainFragment extends Fragment {
                             LinearLayout bookingWindow = binding.bookingWindows;
                             try {
                                 JSONObject jsonResponse = new JSONObject(myResponse);
-
-
-
+                                if (jsonResponse.length() == 0){
+                                    return;
+                                }
 
                                     TextView BookID = new TextView(getActivity());
                                 BookID.setText("ID: " + jsonResponse.getString("book_id"));
@@ -131,14 +127,6 @@ public class mainFragment extends Fragment {
                                     TextView ConfTime = new TextView(getActivity());
                                 ConfTime.setText("Confirmation time: " +jsonResponse.getString("book_conf_time"));
                                     bookingWindow.addView(ConfTime);
-
-
-
-
-
-
-
-
 
 
 

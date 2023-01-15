@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.example.parkmanager.R;
 import com.example.parkmanager.databinding.FragmentMainBinding;
 import com.example.parkmanager.databinding.FragmentSearchBinding;
 import com.example.parkmanager.ui.main.mainViewModel;
+import com.example.parkmanager.ui.parkingplace.parkViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,6 +81,7 @@ public class SearchFragment extends Fragment {
 
     }
 
+
     private void getAllParkingplaces(){
 
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -134,6 +137,19 @@ public class SearchFragment extends Fragment {
                                     Button btnReservieren = new Button(getActivity());
                                     btnReservieren.setText("Reservieren");
                                     parkingPlaceLayout.addView(btnReservieren);
+                                    btnReservieren.setOnClickListener(new View.OnClickListener() {
+
+                                        @Override
+                                        public void onClick(View view) {
+                                            parkViewModel viewModel = new ViewModelProvider(requireActivity()).get(parkViewModel.class);
+                                            try {
+                                                viewModel.setPPID(parkingplace.getString("pp_id"));
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                            Navigation.findNavController(view).navigate(R.id.action_searchFragment_to_parkFragment);
+                                        }
+                                    });
 
 
                                 }
@@ -152,6 +168,8 @@ public class SearchFragment extends Fragment {
                 e.printStackTrace();
             }
         });
+
+
 
 
     }
