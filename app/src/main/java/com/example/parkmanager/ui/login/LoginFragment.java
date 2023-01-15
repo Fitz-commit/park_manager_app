@@ -87,6 +87,7 @@ public class LoginFragment extends Fragment {
                 client.newCall(request2).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
+
                         e.printStackTrace();
                     }
 

@@ -206,7 +206,7 @@ public class mainFragment extends Fragment {
                                     reservationLayout.setOrientation(LinearLayout.VERTICAL);
 
 
-
+                                    //TODO: Widget?
                                     TextView Endtime = new TextView(getActivity());
                                     Endtime.setText("Endttime: " + reservation.getString("res_end_time"));
                                     reservationLayout.addView(Endtime);

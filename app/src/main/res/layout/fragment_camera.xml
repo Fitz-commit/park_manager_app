@@ -21,7 +21,7 @@
         app:maskColor="#3C3C3C" />
 
     <Button
-        android:id="@+id/btn_lock"
+        android:id="@+id/btnScan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
