@@ -1,5 +1,9 @@
 package com.example.parkmanager.ui.main;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,13 +13,20 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.parkmanager.MainActivity;
+import com.example.parkmanager.R;
 import com.example.parkmanager.databinding.FragmentMainBinding;
+import com.example.parkmanager.ui.camera.CameraFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,92 +52,21 @@ import okhttp3.Response;
 public class mainFragment extends Fragment {
 
     private FragmentMainBinding binding;
+    OkHttpClient client = new OkHttpClient();
+
+
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-
-        binding.btnFragmentA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                OkHttpClient client = new OkHttpClient();
-
-                MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-                HashMap<String, String> bodymap = new HashMap<String, String>();
-                bodymap.put("user_token", "fe0a3e0ac5bb5fb6ff8a320b1a3b695b2dd058dd9fcf9d8dec042b09b360953c");
-                JSONObject j = new JSONObject(bodymap);
-                String json = j.toString();
-                String url = "http://10.0.2.2:5000/user/reserve/all";
-                RequestBody body = RequestBody.create(json, JSON); // new
-
-                Request request = new Request.Builder()
-                        .url(url)
-                        .post(body)
-                        .build();
-
-                client.newCall(request).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                        if(response.isSuccessful()){
-                            String myResponse = response.body().string();
-
-
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run()  {
-                                    for (int i =0; i< 1; i++){
-                                        JSONArray ja = null;
-                                        try {
-                                            ja = new JSONArray(myResponse);
-
-                                        JSONObject reservierung = ja.getJSONObject(i);
-
-                                        String resID = reservierung.getString("res_id");
-                                        String resPPID = reservierung.getString("res_pp_id");
-
-                                        binding.jsonId.append(resID + ", " + resPPID);
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                    }
-
-
-                                }
-                            });
-
-
-
-                        }
-                    }
-                });
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String s = mPreferences.getString("user_token","");
+        getAllReservations();
+        getAllBookings();
 
 
 
 
 
-
-                //Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_fragmentA);
-                //NavHostFragment.findNavController(mainFragment.this)
-                        //.navigate(R.id.action_mainFragment_to_fragmentA);
-            }
-        });
-
-        binding.btnFragmentB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_fragmentB);
-                //NavHostFragment.findNavController(mainFragment.this)
-                //.navigate(R.id.action_mainFragment_to_fragmentB);
-            }
-        });
     }
 
     @Override
@@ -142,4 +82,247 @@ public class mainFragment extends Fragment {
 
         return binding.getRoot();
     }
+
+    private void getAllBookings(){
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+
+        HashMap<String, String> bodymap = new HashMap<String, String>();
+        bodymap.put("user_token", mPreferences.getString("user_token",""));//9);
+        JSONObject j = new JSONObject(bodymap);
+        String json = j.toString();
+        String url = mPreferences.getString("backend_url","")+"/user/book/all";
+        RequestBody body = RequestBody.create(json, JSON); // new
+
+
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if(response.isSuccessful()){
+                    String myResponse = response.body().string();
+
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run()  {
+                            LinearLayout bookingWindow = binding.bookingWindows;
+                            try {
+                                JSONObject jsonResponse = new JSONObject(myResponse);
+
+
+
+
+                                    TextView BookID = new TextView(getActivity());
+                                BookID.setText("ID: " + jsonResponse.getString("book_id"));
+                                    bookingWindow.addView(BookID);
+
+                                    TextView ConfTime = new TextView(getActivity());
+                                ConfTime.setText("Confirmation time: " +jsonResponse.getString("book_conf_time"));
+                                    bookingWindow.addView(ConfTime);
+
+
+
+
+
+
+
+
+
+
+
+                            } catch (JSONException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+
+
+
+                }
+            }
+        });
+
+    }
+
+    private void getAllReservations(){
+
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+
+        HashMap<String, String> bodymap = new HashMap<String, String>();
+        bodymap.put("user_token", mPreferences.getString("user_token",""));//9);
+        JSONObject j = new JSONObject(bodymap);
+        String json = j.toString();
+        String url = mPreferences.getString("backend_url","")+"/user/reserve/all";
+        RequestBody body = RequestBody.create(json, JSON); // new
+
+
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if(response.isSuccessful()){
+                    String myResponse = response.body().string();
+
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run()  {
+                            LinearLayout reservationList = binding.reservationList;
+                            try {
+                                JSONArray jsonResponse = new JSONArray(myResponse);
+                                for(int i = 0; i < jsonResponse.length();i++){
+
+                                    JSONObject reservation = jsonResponse.getJSONObject(i);
+
+                                    LinearLayout reservationLayout = new LinearLayout(getActivity());
+                                    reservationList.addView(reservationLayout);
+                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+                                    params.setMargins(0,0,0,20);
+                                    reservationLayout.setLayoutParams(params);
+                                    reservationLayout.setOrientation(LinearLayout.VERTICAL);
+
+
+
+                                    TextView Endtime = new TextView(getActivity());
+                                    Endtime.setText("Endttime: " + reservation.getString("res_end_time"));
+                                    reservationLayout.addView(Endtime);
+
+                                    TextView Starttime = new TextView(getActivity());
+                                    Starttime.setText("Starttime: " +reservation.getString("res_start_time"));
+                                    reservationLayout.addView(Starttime);
+
+                                    TextView Parkingplace = new TextView(getActivity());
+                                    Parkingplace.setText("Parkingplace: "+reservation.getString("pp_nickname"));
+                                    reservationLayout.addView(Parkingplace);
+
+                                    TextView Parkinglot = new TextView(getActivity());
+                                    Parkinglot.setText("Lot: "+reservation.getString("res_lot_id"));
+                                    reservationLayout.addView(Parkinglot);
+
+                                    TextView ResID = new TextView(getActivity());
+                                    ResID.setText("Lot: "+reservation.getString("res_id"));
+                                    reservationLayout.addView(ResID);
+
+                                    LinearLayout btnLayout = new LinearLayout(getActivity());
+                                    reservationList.addView(btnLayout);
+                                    btnLayout.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+                                    btnLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                                    Button btnStornieren = new Button(getActivity());
+                                    btnStornieren.setText("Stornieren");
+                                    btnLayout.addView(btnStornieren);
+                                    btnStornieren.setOnClickListener(new View.OnClickListener() {
+
+                                        @Override
+                                        public void onClick(View view) {
+                                            try {
+                                                cancelReservation(reservation.getString("res_id"));
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+
+
+                                    Button btnBuchen = new Button(getActivity());
+                                    btnBuchen.setText("Buchen");
+                                    btnLayout.addView(btnBuchen);
+                                    btnBuchen.setOnClickListener(new View.OnClickListener() {
+
+                                        @Override
+                                        public void onClick(View view) {
+                                            mainViewModel viewModel = new ViewModelProvider(requireActivity()).get(mainViewModel.class);
+                                            try {
+                                                viewModel.setresID(reservation.getString("res_id"));
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_cameraFragment);
+                                        }
+                                    });
+
+
+
+
+                                }
+
+
+
+
+                        } catch (JSONException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+
+
+
+                }
+            }
+        });
+    }
+
+
+    private void cancelReservation(String resID){
+
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+
+        HashMap<String, String> bodymap = new HashMap<String, String>();
+        bodymap.put("user_token", mPreferences.getString("user_token",""));//9);
+        bodymap.put("res_id", resID);//9);
+        JSONObject j = new JSONObject(bodymap);
+        String json = j.toString();
+        String url = mPreferences.getString("backend_url","")+"/user/reserve/cancel";
+        RequestBody body = RequestBody.create(json, JSON); // new
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                //TODO: Refresh?
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+            }
+        });
+
+
+    }
+
+
+
+
 }

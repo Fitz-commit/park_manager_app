@@ -6,14 +6,16 @@ import androidx.lifecycle.ViewModel;
 
 public class mainViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    private final MutableLiveData<String> resID;
 
     public mainViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        resID = new MutableLiveData<>();
+        resID.setValue("This is home fragment");
     }
-
-    public LiveData<String> getText() {
-        return mText;
+    public void setresID(String resID) {
+        this.resID.setValue(resID);
+    }
+    public LiveData<String> getresID() {
+        return resID;
     }
 }

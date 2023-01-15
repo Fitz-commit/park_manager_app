@@ -11,9 +11,11 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ import com.example.parkmanager.MainActivity;
 import com.example.parkmanager.R;
 import com.example.parkmanager.databinding.ActivityMainBinding;
 import com.example.parkmanager.databinding.FragmentCameraBinding;
+import com.example.parkmanager.ui.main.mainViewModel;
 import com.google.zxing.Result;
 
 /**
@@ -56,6 +59,15 @@ public class CameraFragment extends Fragment  {
 
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mainViewModel viewModel = new ViewModelProvider(requireActivity()).get(mainViewModel.class);
+        String s = viewModel.getresID().getValue();
+        //TODO: camera booking impelmentieren
+        String a = "a";
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
