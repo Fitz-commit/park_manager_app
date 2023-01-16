@@ -10,8 +10,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -19,11 +22,25 @@ import android.widget.Toast;
 import com.example.parkmanager.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private final int CAMERA_REQUEST_CODE = 101;
+    OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +81,42 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.logout_setting) {
-            return true;
+            //return true;
+
+            SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            String url = mPreferences.getString("backend_url","")+"/user/logout?user_token="+mPreferences.getString("user_token","");
+            MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+
+            HashMap<String, String> bodymap = new HashMap<String, String>();
+            bodymap.put("user_token", mPreferences.getString("user_token",""));//9);
+            JSONObject j = new JSONObject(bodymap);
+            String json = j.toString();
+            RequestBody body = RequestBody.create(json, JSON);
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    if(response.isSuccessful()){
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }
+
 
         return super.onOptionsItemSelected(item);
     }

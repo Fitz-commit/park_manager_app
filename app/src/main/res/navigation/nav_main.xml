@@ -45,5 +45,9 @@
         android:id="@+id/lotFragment"
         android:name="com.example.parkmanager.ui.parkingplace.LotFragment"
         android:label="fragment_lot"
-        tools:layout="@layout/fragment_lot" />
+        tools:layout="@layout/fragment_lot" >
+        <action
+            android:id="@+id/action_lotFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 </navigation>

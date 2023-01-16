@@ -16,11 +16,8 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
 import com.example.parkmanager.R;
-import com.example.parkmanager.databinding.FragmentMainBinding;
 import com.example.parkmanager.databinding.FragmentParkBinding;
 import com.example.parkmanager.ui.main.mainViewModel;
 
@@ -29,15 +26,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
@@ -46,6 +40,7 @@ public class ParkFragment extends Fragment {
     FragmentParkBinding binding;
     OkHttpClient client = new OkHttpClient();
 
+    JSONArray parkinglots;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,10 +50,48 @@ public class ParkFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        parkViewModel parkviewModel = new ViewModelProvider(requireActivity()).get(parkViewModel.class);
 
         getParkingplace();
+        getParkinglots(parkviewModel.getPPID().getValue());
 
-        getParkinglots();
+
+        getActivity().runOnUiThread(new Runnable(){
+
+            @Override
+            public void run() {
+
+                binding.btnPLResevierem.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View view) {
+
+
+                        for(int i = 0; i < parkinglots.length();i++){
+
+                            JSONObject parkinglot = null;
+                            try {
+                                parkinglot = parkinglots.getJSONObject(i);
+                                lotViewModel lotviewModel = new ViewModelProvider(requireActivity()).get(lotViewModel.class);
+                                if (parkinglot.getString("pl_id").equals(String.valueOf(binding.PPId.getText()))){
+                                    lotviewModel.setPLID(String.valueOf(binding.PPId.getText()));
+                                    lotviewModel.setPPID(parkviewModel.getPPID().getValue());
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        Navigation.findNavController(view).navigate(R.id.action_parkFragment_to_lotFragment);
+                    }
+                });
+
+            }
+        });
+
+
+
+
 
 
     }
@@ -77,63 +110,29 @@ public class ParkFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void getParkinglots(){
-
-        parkViewModel viewModel = new ViewModelProvider(requireActivity()).get(parkViewModel.class);
+    private void getParkinglots(String ppID){
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        String url = mPreferences.getString("backend_url","")+"/all/parkinglot?pp_id="+ viewModel.getPPID().getValue();
+        String url = mPreferences.getString("backend_url","")+"/all/parkinglot?pp_id="+ppID;
 
         Request request = new Request.Builder()
                 .url(url)
                 .build();
 
+
         client.newCall(request).enqueue(new Callback() {
+
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
 
                 if(response.isSuccessful()){
                     String myResponse = response.body().string();
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                JSONArray jsonResponse = new JSONArray(myResponse);
-                                LinearLayout PLLinearLayout = binding.PLLinearLayout;
-
-                            for(int i = 0; i< jsonResponse.length(); i++){
-                                JSONObject parkinglot = jsonResponse.getJSONObject(i);
-
-                                Button btnParkinglot = new Button(getActivity());
-                                btnParkinglot.setText(parkinglot.getString("pl_id"));
-                                PLLinearLayout.addView(btnParkinglot);
-                                btnParkinglot.setOnClickListener(new View.OnClickListener(){
-
-                                    @Override
-                                    public void onClick(View view) {
-                                        lotViewModel viewModel = new ViewModelProvider(requireActivity()).get(lotViewModel.class);
-
-                                        try {
-                                            viewModel.setPLID(parkinglot.getString("pl_id"));
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                        Navigation.findNavController(view).navigate(R.id.action_parkFragment_to_lotFragment);
-
-                                    }
-                                });
+                    try {
+                        parkinglots = new JSONArray(myResponse);
 
 
-
-                            }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    });
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
@@ -163,15 +162,13 @@ public class ParkFragment extends Fragment {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
 
                 if (response.isSuccessful()){
-                    System.out.println(response.body().contentLength());
-                    System.out.println(response.header("Connection"));
                     //TODO: Nachschauen
                     //Diese Funktion funktioniert nicht auf dem Android Emulator sondern nur auf mobilen Geräten
                     //Anscheinend bekannstes Problem ohne richtige Lösung
                     //https://stackoverflow.com/questions/60589038/okhttp-java-net-protocolexception-unexpected-end-of-stream
                     //https://stackoverflow.com/questions/32183990/java-net-protocolexception-unexpected-end-of-stream?rq=1
 
-                    String myResponse = response.body().string();
+                    String myResponse = Objects.requireNonNull(response.body()).string();
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

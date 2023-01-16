@@ -97,7 +97,6 @@ public class LoginFragment extends Fragment {
                             assert response.body() != null;
                             String jsonResponseString = response.body().string();
 
-                            String message ="Sucessful";
 
 
                             try {
@@ -113,7 +112,6 @@ public class LoginFragment extends Fragment {
 
 
                         } else {
-                            String message ="Failure";
                             //Toast.makeText(LoginActivity.this,message,Toast.LENGTH_LONG).show();
                         }
 

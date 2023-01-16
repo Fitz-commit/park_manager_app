@@ -212,7 +212,7 @@ public class mainFragment extends Fragment {
                                     reservationLayout.addView(Parkinglot);
 
                                     TextView ResID = new TextView(getActivity());
-                                    ResID.setText("Lot: "+reservation.getString("res_id"));
+                                    ResID.setText("Resvervation-ID: "+reservation.getString("res_id"));
                                     reservationLayout.addView(ResID);
 
                                     LinearLayout btnLayout = new LinearLayout(getActivity());
@@ -298,6 +298,7 @@ public class mainFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 //TODO: Refresh?
+
 
             }
 
