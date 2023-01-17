@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
 
+
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -52,13 +53,14 @@ public class LoginActivity extends AppCompatActivity {
 
         //10.0.2.2
         //5.75.148.247
-        mEditor.putString("backend_url","http://192.168.2.106:5000");
+        mEditor.putString("backend_url","http://5.75.148.247:80");
         mEditor.commit();
 
 
 
 
     }
+
 
 
 }

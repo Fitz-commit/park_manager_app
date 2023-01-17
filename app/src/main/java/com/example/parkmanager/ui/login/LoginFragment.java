@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.parkmanager.MainActivity;
+import com.example.parkmanager.R;
 import com.example.parkmanager.databinding.FragmentLoginBinding;
 import com.example.parkmanager.databinding.FragmentMainBinding;
 import com.example.parkmanager.ui.main.mainViewModel;
@@ -40,7 +42,7 @@ import okhttp3.Response;
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
-
+    OkHttpClient client = new OkHttpClient();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +64,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO: Registrieren
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
                 //startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
             }
         });
@@ -69,7 +72,7 @@ public class LoginFragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OkHttpClient client = new OkHttpClient();
+
                 MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
                 HashMap<String, String> bodymap = new HashMap<String, String>();
                 bodymap.put("user_email", emaillogin.getText().toString());

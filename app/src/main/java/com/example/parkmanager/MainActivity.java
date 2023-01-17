@@ -103,6 +103,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                     if(response.isSuccessful()){
+
+
+                        SharedPreferences.Editor mEditor = mPreferences.edit();
+                        mEditor.putString("user_token","");
+                        mEditor.commit();
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
 
                     }
