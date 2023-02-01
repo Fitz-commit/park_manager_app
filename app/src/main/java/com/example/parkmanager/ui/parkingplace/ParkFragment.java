@@ -66,7 +66,11 @@ public class ParkFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
 
-
+                        /*
+                        Überprüfe ob die Usereingaben in Bezug auf Parkinglot stimmen.
+                        Setzte die Usereingaben in das lotviewModel.
+                        Navigiere zum nächsten Fragment (LotFragment)
+                         */
                         for(int i = 0; i < parkinglots.length();i++){
 
                             JSONObject parkinglot = null;
@@ -110,6 +114,11 @@ public class ParkFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /*
+Stelle eine Anfrage an das Backend und selektiere alle Parkinglots auf dem Parkplatz.
+Damit kann überprüft werden ob der User nur Müll als Parkinglot eingegeben hat oder
+ob die Lot tatsächlcih existiert.
+ */
     private void getParkinglots(String ppID){
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String url = mPreferences.getString("backend_url","")+"/all/parkinglot?pp_id="+ppID;
@@ -144,10 +153,16 @@ public class ParkFragment extends Fragment {
         });
     }
 
+    /*
+    Stelle eine Anfrage an das Backend. Selekte den Parkplatz welchen der User sich im SearchFragment
+    ausgesucht hat und stelle das Profil in der App visuell dar.
+     */
+
     private void getParkingplace(){
 
         parkViewModel viewModel = new ViewModelProvider(requireActivity()).get(parkViewModel.class);
 
+        //Stelle eine Anfrage an das Backend
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String url = mPreferences.getString("backend_url","")+"/org/parkingplace?pp_id="+ viewModel.getPPID().getValue();
 
@@ -162,12 +177,12 @@ public class ParkFragment extends Fragment {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
 
                 if (response.isSuccessful()){
-                    //TODO: Nachschauen
                     //Diese Funktion funktioniert nicht auf dem Android Emulator sondern nur auf mobilen Geräten
                     //Anscheinend bekannstes Problem ohne richtige Lösung
                     //https://stackoverflow.com/questions/60589038/okhttp-java-net-protocolexception-unexpected-end-of-stream
                     //https://stackoverflow.com/questions/32183990/java-net-protocolexception-unexpected-end-of-stream?rq=1
 
+                    //Füge die Daten aus der Anfrage der UI hinzu.
                     String myResponse = Objects.requireNonNull(response.body()).string();
                     getActivity().runOnUiThread(new Runnable() {
                         @Override

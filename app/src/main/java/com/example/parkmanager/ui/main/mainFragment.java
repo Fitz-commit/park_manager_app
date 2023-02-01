@@ -79,6 +79,9 @@ public class mainFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /*
+    Selektiere ob der User eine Aktive Buchung besitzt und zeige sie im Menü
+     */
     private void getAllBookings(){
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -144,6 +147,11 @@ public class mainFragment extends Fragment {
 
     }
 
+    /*
+Selektiere alle Reservierungen die der User hat und zeige diese auf der UI.
+Erstelle zu jeder Reservierung einen stronierungs und buchen button um entweder die Reservierung
+zu canceln oder um zum CameraFragment zu navigieren.
+ */
     private void getAllReservations(){
 
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -194,7 +202,7 @@ public class mainFragment extends Fragment {
                                     reservationLayout.setOrientation(LinearLayout.VERTICAL);
 
 
-                                    //TODO: Widget?
+
                                     TextView Endtime = new TextView(getActivity());
                                     Endtime.setText("Endttime: " + reservation.getString("res_end_time"));
                                     reservationLayout.addView(Endtime);
@@ -274,7 +282,8 @@ public class mainFragment extends Fragment {
         });
     }
 
-
+    //Falls der User bei einer Reservierung den Stornieren-Button antippt sende eine Anfrage
+    //an das Backend und cancel diese.
     private void cancelReservation(String resID){
 
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -297,7 +306,6 @@ public class mainFragment extends Fragment {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                //TODO: Refresh?
 
 
             }

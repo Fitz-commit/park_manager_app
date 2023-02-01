@@ -99,7 +99,12 @@ public class CameraFragment extends Fragment  {
                 SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-
+                /*
+                Wenn der User auf den Button tippt sende eine Anfrage an das Backend mit dem
+                QR-Code im Body.
+                Diese Anfrage soll die Buchung authentifizieren und somit bestätigen das der User
+                der den parkplatz reserviert hat auch wirklich darauf steht.
+                 */
                 HashMap<String, String> bodymap = new HashMap<String, String>();
                 bodymap.put("user_token", mPreferences.getString("user_token",""));//9);
                 bodymap.put("reservation_id",viewModel.getresID().getValue() );//9);
@@ -143,7 +148,7 @@ public class CameraFragment extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        //Decodiere den QR-Code und zeige in in der UI
 
         binding = FragmentCameraBinding.inflate(getLayoutInflater());
 
@@ -158,7 +163,6 @@ public class CameraFragment extends Fragment  {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        //Toast.makeText(getActivity(), result.getText(), Toast.LENGTH_SHORT).show();
                         qrCode = result.getText();
                         binding.txtQrcode.setText("You scanned parkinglot: " + result.getText());
                     }

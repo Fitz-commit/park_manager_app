@@ -42,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
 
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
@@ -51,8 +50,10 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor mEditor = mPreferences.edit();
 
-        //10.0.2.2
-        //5.75.148.247
+        //10.0.2.2:5000
+        //5.75.148.247:80
+        //Speicher die URL in den SharedPreferences so das jedes Fragment/Acitvity auf das Backend
+        //zugriff hat
         mEditor.putString("backend_url","http://5.75.148.247:80");
         mEditor.commit();
 

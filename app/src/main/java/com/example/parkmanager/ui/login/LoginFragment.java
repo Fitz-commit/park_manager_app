@@ -59,15 +59,22 @@ public class LoginFragment extends Fragment {
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor mEditor = mPreferences.edit();
 
-
+        /*
+        Falls der User auf den Registrieren Button tippt. Navigiere ihn zum Reservations-Fragment
+         */
         noaccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Registrieren
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
-                //startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
             }
         });
+
+        /*
+        Wenn der User sich einloggen möchte, nimm alle Parameter (email und password) und sende
+        diese an das Backend. Falls es erfolgreich verlief setzte den Token, welcher als Antwort
+        zurückkommt als SharedPreferences damit jede weitere Anfrage diesen entnehmen und
+         benutzen kann.
+         */
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override

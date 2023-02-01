@@ -40,6 +40,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+//Das Search fragment wird aufgerufen wenn der user im unteren Menü auf die Lupe tippt.
+//Es dient der Suche nach einem parkplatz auf dem der User eine Reservation anlegen möchte.
 
 public class SearchFragment extends Fragment {
 
@@ -77,13 +79,19 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //Führe diese Methode aus sobald das Fragment fertig instanziiert wurde
         getAllParkingplaces();
 
     }
 
-
+/*
+Stelle eine Anfrage an das Backend um alle Parkplätze zu bekommen.
+Die daraus resultierenden Daten werden im Fragemnt sturkturiert und in Form gebracht.
+Der User kann dann anscließend einen parkplatz auswählen für welchen er eine Reservierung erstellen
+möchte.
+ */
     private void getAllParkingplaces(){
-
+        //Führe die Anfrage aus
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         String url = mPreferences.getString("backend_url","")+"/all/parkingplace";
@@ -99,7 +107,7 @@ public class SearchFragment extends Fragment {
                 LinearLayout parkingPlaceList = binding.parkingPlaceList;
                 String myResponse = response.body().string();
                 if(response.isSuccessful()) {
-
+                    //erstelle die visuellen elemente auf der UI
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

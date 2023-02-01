@@ -65,7 +65,11 @@ public class LotFragment extends Fragment {
                  String endTime = binding.ResEndTimeH.getText() + ":" + binding.ResEndTimeM.getText()+":00";
 
 
-
+                 /*
+                  Führe eine Anfrage an das Backend aus und reserviere die gewünschte
+                  Parkinglot für den User um die angegebene Zeit.
+                  Gehe danach wieder aufs Main-Menü zurück.
+                  */
 
                 SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -132,6 +136,12 @@ public class LotFragment extends Fragment {
         return binding.getRoot();
     }
 
+
+    /*
+    Führe eine Anfrage an das Backend durch. Selektiere alle Reservationen welche für diesen
+    Parkinglot auf diesem Parkingplace(Parkplatz) am heutigen Tag existieren und
+    zeige es in der UI
+     */
     private void getAllReservations(String ppID, String plID){
 
 

@@ -53,6 +53,10 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        /*
+        Entnehme alle Paramter aus den Feldern und sende eine Registierungsanfrage an das
+        Backend. Falls das erfolgreich verläuft switche zum Login_Fragment.
+         */
         binding.Regestrieren.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,15 +110,18 @@ public class RegisterFragment extends Fragment {
         });
     }
 
+    //überprüfe ob die Emails übereinstimmen
     private boolean emailMatch(){
         return binding.emaillogin.getText().toString().equals(binding.emailWiederholung.getText().toString());
     }
 
+    //überprüfe ob die passwörter übereinstimmen
     private boolean passwordMatch(){
         return binding.passwordlogin.getText().toString().equals(binding.passwordWiederholen.getText().toString());
 
     }
 
+    //überprüfe ob alle felder gefüllt sind
     private boolean checkTextFields(){
         return !binding.Vornamelogin.getText().toString().equals("") && !binding.Nachnamelogin.getText().toString().equals("")
                 && !binding.emaillogin.getText().toString().equals("") && !binding.emailWiederholung.getText().toString().equals("") &&

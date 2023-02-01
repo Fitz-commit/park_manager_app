@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
+
+        //instanziere das Menü welches am boden der App zu finden ist
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         NavController botNavController = Navigation.findNavController(this, R.id.nav_host_content_main);
         NavigationUI.setupWithNavController(binding.bottomNavigation, botNavController);
 
+        //Frage den User einverstanden ist wenn die APP die Kamera verwendet wird
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
         }
@@ -75,10 +77,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        /*
+        Wenn logout im oberen Menü gedrückt wird soll Anfrage ans Backend gesendet werden
+        welche den User aussloggt.
+        Des weiteren wird auch der user-token aus den SharedPreferences gelöscht
+        */
 
         if (id == R.id.logout_setting) {
             //return true;
