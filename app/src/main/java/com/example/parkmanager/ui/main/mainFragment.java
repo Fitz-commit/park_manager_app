@@ -229,7 +229,7 @@ zu canceln oder um zum CameraFragment zu navigieren.
                                     btnLayout.setOrientation(LinearLayout.HORIZONTAL);
 
                                     Button btnStornieren = new Button(getActivity());
-                                    btnStornieren.setText("Stornieren");
+                                    btnStornieren.setText("Cancel");
                                     btnLayout.addView(btnStornieren);
                                     btnStornieren.setOnClickListener(new View.OnClickListener() {
 
@@ -245,7 +245,7 @@ zu canceln oder um zum CameraFragment zu navigieren.
 
 
                                     Button btnBuchen = new Button(getActivity());
-                                    btnBuchen.setText("Buchen");
+                                    btnBuchen.setText("Book");
                                     btnLayout.addView(btnBuchen);
                                     btnBuchen.setOnClickListener(new View.OnClickListener() {
 

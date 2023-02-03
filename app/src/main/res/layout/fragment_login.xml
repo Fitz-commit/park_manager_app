@@ -9,7 +9,7 @@
         android:id="@+id/Überschrift"
         android:layout_width="218dp"
         android:layout_height="70dp"
-        android:text="Bitte loggen sie sich ein "
+        android:text="Sign Up"
         android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,7 +39,7 @@
         android:layout_width="309dp"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="Passwort"
+        android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,12 +49,11 @@
         app:layout_constraintVertical_bias="0.383" />
 
 
-
     <Button
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Anmelden"
+        android:text="Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +64,7 @@
         android:id="@+id/noaccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registrieren"
+        android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"

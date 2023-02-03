@@ -143,7 +143,7 @@ möchte.
                                     parkingPlaceLayout.addView(PPDuration);
 
                                     Button btnReservieren = new Button(getActivity());
-                                    btnReservieren.setText("Reservieren");
+                                    btnReservieren.setText("Reserve");
                                     parkingPlaceLayout.addView(btnReservieren);
                                     btnReservieren.setOnClickListener(new View.OnClickListener() {
 
